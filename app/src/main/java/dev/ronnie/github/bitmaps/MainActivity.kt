@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         imageView = findViewById(R.id.imageView)
         openCameraBtn = findViewById(R.id.openCamera)
         openGalleryBtn = findViewById(R.id.openStorage)
-        imagePicker = ImagePicker(activity = this)
+        imagePicker = ImagePicker(this)
 
         bitmapLiveData.observe(this, { bitmap ->
             this.bitmap = bitmap
