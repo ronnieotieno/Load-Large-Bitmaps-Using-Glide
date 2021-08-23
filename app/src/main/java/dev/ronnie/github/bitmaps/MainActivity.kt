@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import dev.ronnie.github.imagepicker.ImagePicker
+import dev.ronnie.github.imagepicker.ImageResult
 
 class MainActivity : AppCompatActivity() {
     private lateinit var openGalleryBtn: Button
@@ -44,22 +45,34 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun takeFromCamera() {
-        imagePicker.takeFromCamera { isSuccessful, uri, errorString ->
-            if(isSuccessful){
-                getLargeBitmap(uri!!)
-            }else{
-                Toast.makeText(this@MainActivity, errorString, Toast.LENGTH_LONG).show()
+        imagePicker.takeFromCamera { imageResult ->
+            when(imageResult){
+                is ImageResult.Success ->{
+                    val uri = imageResult.value
+                    getLargeBitmap(uri)
+                }
+                is ImageResult.Failure ->{
+                    val errorString = imageResult.errorString
+                    Toast.makeText(this@MainActivity, errorString, Toast.LENGTH_LONG).show()
+                }
             }
+
         }
     }
 
     private fun pickFromStorage() {
-        imagePicker.pickFromStorage { isSuccessful, uri, errorString ->
-            if(isSuccessful){
-                getLargeBitmap(uri!!)
-            }else{
-                Toast.makeText(this@MainActivity, errorString, Toast.LENGTH_LONG).show()
+        imagePicker.pickFromStorage { imageResult ->
+            when (imageResult) {
+                is ImageResult.Success -> {
+                    val uri = imageResult.value
+                    getLargeBitmap(uri)
+                }
+                is ImageResult.Failure -> {
+                    val errorString = imageResult.errorString
+                    Toast.makeText(this@MainActivity, errorString, Toast.LENGTH_LONG).show()
+                }
             }
+
         }
     }
 
